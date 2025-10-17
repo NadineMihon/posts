@@ -1,6 +1,6 @@
 import React from "react";
 
-export const DetailPost = () => {
+export const DetailPostPage = () => {
     return (
         <div>Страница поста</div>
     )

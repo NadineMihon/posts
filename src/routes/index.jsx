@@ -1,12 +1,12 @@
 import { createBrowserRouter } from "react-router-dom";
 import { Root } from "../components/Root";
-import { Main } from "../pages/main";
-import { Posts } from "../pages/posts";
-import { DetailPost } from "../pages/posts/detail";
-import { EditPost } from "../pages/posts/edit";
-import { AddPost } from "../pages/posts/add";
-import { Auth } from "../pages/auth";
-import { Registration } from "../pages/registration";
+import { MainPage } from "../pages/main";
+import { PostsPage } from "../pages/posts";
+import { DetailPostPage } from "../pages/posts/detail";
+import { EditPostPage } from "../pages/posts/edit";
+import { AddPostPage } from "../pages/posts/add";
+import { AuthPage } from "../pages/auth";
+import { RegistrationPage } from "../pages/registration";
 
 export const routesConfig = [
     {
@@ -15,31 +15,31 @@ export const routesConfig = [
         children: [
             {
                 index:true,
-                element: <Main />
+                element: <MainPage />
             },
             {
                 path: '/posts',
-                element: <Posts />
+                element: <PostsPage />
             },
             {
                 path: '/posts/:postId',
-                element: <DetailPost />
+                element: <DetailPostPage />
             },
             {
                 path: '/posts/:postId/edit',
-                element: <EditPost />
+                element: <EditPostPage />
             },
             {
                 path: '/posts/add',
-                element: <AddPost />
+                element: <AddPostPage />
             },
             {
                 path: '/auth',
-                element: <Auth />
+                element: <AuthPage />
             },
             {
                 path: '/registration',
-                element: <Registration />
+                element: <RegistrationPage />
             },
         ]
     },

@@ -1,6 +1,6 @@
 import React from "react";
 
-export const EditPost = () => {
+export const EditPostPage = () => {
     return (
         <div>Страница редактирования поста</div>
     )

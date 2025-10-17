@@ -1,7 +1,26 @@
 import React from "react";
+import { Posts } from "../../components/Posts";
+
+const INITIAL_POSTS = [
+    {
+        id: 1,
+        title: 'Post 1',
+        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
+    },
+        {
+        id: 2,
+        title: 'Post 2',
+        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
+    },
+        {
+        id: 3,
+        title: 'Post 3',
+        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
+    },
+];
 
 export const Main = () => {
     return (
-        <div>Главная</div>
+        <Posts posts={INITIAL_POSTS} />
     )
 };

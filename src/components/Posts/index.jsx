@@ -4,8 +4,7 @@ import { Container } from "../Container"
 import * as SC from "./styles";
 
 export const Posts = ({ posts }) => (
-    <Container>
-        <SC.Title>Свежие публикации</SC.Title>
+    <Container>       
         <SC.Posts>
             {
                 posts.map((post) => <Post key={post.id} post={post} />)

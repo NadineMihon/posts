@@ -1,29 +1,32 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams } from "react-router-dom";
-import { INITIAL_POSTS } from "..";
 import { Typo } from "../../../components/Typo";
 import { Container } from "../../../components/Container";
 import { Link } from "../../../components/Link";
+import { useDispatch, useSelector } from "react-redux";
+import { getPost } from "../../../redux/slice/postsSlice";
 
 import * as SC from "./styles";
 
 export const DetailPostPage = () => {
     const { postId } = useParams();
+    const postForView = useSelector((state) => state.posts.postForView);
+    const dispatch = useDispatch();
 
-    const currentPost = useMemo(() => {
-        return INITIAL_POSTS.find((item) => item.id === Number(postId)); 
+    useEffect(() => {
+        dispatch(getPost(Number(postId)));
     }, [postId]);
 
-    if (!currentPost) {
+    if (!postForView) {
         return <>Пост не найден</>
     }
     
     return (
         <Container>
             <SC.Post>
-                <Typo>{currentPost.title}</Typo>
-                <SC.Image src={currentPost.image} alt={currentPost.title} />
-                <SC.Text>{currentPost.text}</SC.Text>  
+                <Typo>{postForView.title}</Typo>
+                <SC.Image src={postForView.image} alt={postForView.title} />
+                <SC.Text>{postForView.text}</SC.Text>  
             </SC.Post>
             <Link to={'/posts'}>Обратно к публикациям</Link>
         </Container>

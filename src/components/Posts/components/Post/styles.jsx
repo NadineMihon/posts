@@ -8,7 +8,7 @@ export const Post = styled.div `
     align-items: center;
 `
 export const Image = styled.img `
-    max-width: 200px;
+    max-width: 150px;
     width: 100%;
 `
 

@@ -4,29 +4,37 @@ import { Typo } from "../../../components/Typo";
 import { Container } from "../../../components/Container";
 import { Link } from "../../../components/Link";
 import { useDispatch, useSelector } from "react-redux";
-import { getPost } from "../../../redux/slice/postsSlice";
+import { getPostById } from "../../../redux/slice/postsSlice";
 
 import * as SC from "./styles";
 
 export const DetailPostPage = () => {
     const { postId } = useParams();
-    const postForView = useSelector((state) => state.posts.postForView);
+
+    const { post, loading } = useSelector((state) => state.posts.postForView);
+    
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(getPost(Number(postId)));
+        dispatch(getPostById(Number(postId)));
     }, [postId]);
 
-    if (!postForView) {
+    if (loading) {
+        return <>Loading...</>
+    }
+
+    if (!post || !post.hasOwnProperty('id')) {
         return <>Пост не найден</>
     }
     
+    const image = post.image || 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png';
+
     return (
         <Container>
             <SC.Post>
-                <Typo>{postForView.title}</Typo>
-                <SC.Image src={postForView.image} alt={postForView.title} />
-                <SC.Text>{postForView.text}</SC.Text>  
+                <Typo>{post.title}</Typo>
+                <SC.Image src={image} alt={post.title} />
+                <SC.Text>{post.body}</SC.Text>  
             </SC.Post>
             <Link to={'/posts'}>Обратно к публикациям</Link>
         </Container>

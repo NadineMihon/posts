@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Posts } from "../../components/Posts";
 import { Container } from "../../components/Container";
 import { Typo } from "../../components/Typo";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getPosts } from "../../redux/slice/postsSlice";
 
 export const PostsPage = () => {
-    const posts = useSelector((state) => state.posts.list);
+    const { posts, loading } = useSelector((state) => state.posts.list);
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getPosts())
+    }, []);
+
+    if (loading) {
+        return <>Loading...</>
+    }
+
+        if (!posts) {
+        return <>Посты не найдены</>
+    }
+
     return (
         <Container>
             <Typo>Публикации</Typo>

@@ -1,64 +1,94 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { postsAPI } from '../../api/postsAPI';
 
 const initialState = {
-  list: [
-    {
-        id: 5,
-        title: 'Post 5',
-        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi culpa quod, quisquam laudantium adipisci tempora commodi laborum, minus quidem, blanditiis quibusdam labore libero deserunt eaque rem esse cum placeat exercitationem!',
-    },
-    {
-        id: 4,
-        title: 'Post 4',
-        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi culpa quod, quisquam laudantium adipisci tempora commodi laborum, minus quidem, blanditiis quibusdam labore libero deserunt eaque rem esse cum placeat exercitationem!',
-    }, 
-    {
-        id: 3,
-        title: 'Post 3',
-        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi culpa quod, quisquam laudantium adipisci tempora commodi laborum, minus quidem, blanditiis quibusdam labore libero deserunt eaque rem esse cum placeat exercitationem!',
-    }, 
-    {
-        id: 2,
-        title: 'Post 2',
-        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi culpa quod, quisquam laudantium adipisci tempora commodi laborum, minus quidem, blanditiis quibusdam labore libero deserunt eaque rem esse cum placeat exercitationem!',
-    },              
-    {
-        id: 1,
-        title: 'Post 1',
-        image: 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png',
-        text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi culpa quod, quisquam laudantium adipisci tempora commodi laborum, minus quidem, blanditiis quibusdam labore libero deserunt eaque rem esse cum placeat exercitationem!',
-    },
-  ],
-  postForView: null,
-  freshPosts: null,
+  list: {
+    posts: null,
+    loading: false
+  },
+  postForView: {
+    post: null,
+    loading: false
+  },
+  freshPosts: {
+    posts: null,
+    loading: false
+  },
 };
+
+export const getPosts = createAsyncThunk(
+  'posts/fetchPosts',
+  async() => {
+    return await postsAPI.fetchPosts();
+  }
+);
+
+export const getFreshPosts = createAsyncThunk(
+  'posts/fetchFreshPosts',
+  async(limit) => {
+    return await postsAPI.fetchFreshPosts(limit);
+  }
+);
+
+export const getPostById = createAsyncThunk(
+  'posts/fetchPostById',
+  async(postId) => {
+    return await postsAPI.fetchById(postId);
+  }
+);
 
 export const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    setPosts: (state, action) => {
-      state.list = action.payload;
-    },
     editPost: (state, action) => {
         // edit post
-    },
-    getPost: (state, action) => {
-      state.postForView = state.list.find((item) => item.id === action.payload);
-    },
-    getFreshPosts: (state) => {
-      state.freshPosts = state.list.slice(0, 3);
     },
     addPost: (state, action) => {
         // add new post by data
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getPosts.pending, (state) => {
+        state.list = {
+          posts: null,
+          loading: true
+        };
+      })
+      .addCase(getPosts.fulfilled, (state, action) => {
+        state.list = {
+          posts: action.payload,
+          loading: false
+        };
+      })
+      .addCase(getFreshPosts.pending, (state) => {
+        state.freshPosts = {
+          posts: null,
+          loading: true
+        }
+      })
+      .addCase(getFreshPosts.fulfilled, (state, action) => {
+        state.freshPosts = {
+          posts: action.payload,
+          loading: false
+        };
+      })
+      .addCase(getPostById.pending, (state) => {
+        state.postForView = {
+          post: null,
+          loading: true
+        };
+      })
+      .addCase(getPostById.fulfilled , (state, action) => {
+        state.postForView = {
+          post: action.payload,
+          loading: false
+        };
+      })
+  }
 });
 
-export const { setPosts, editPost, getPost, getFreshPosts, addPost } = postsSlice.actions;
+export const { editPost, addPost } = postsSlice.actions;
 
 export default postsSlice.reducer;

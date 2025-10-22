@@ -13,7 +13,7 @@ export const Wrapper = styled.div `
 export const Menu = styled.div `
     margin: 25px auto;
     padding: 12px 20px;
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
     display: flex;
     gap: 20px;

@@ -17,3 +17,11 @@ export const Text = styled.p `
     line-height: 1.5;
     text-indent: 18px;
 `
+export const LinkWrapper = styled.div `
+    max-width: 500px;
+    width: 100%;
+    margin: 20px auto;
+    display: flex;
+    gap: 40px;
+    justify-content: space-between;
+`

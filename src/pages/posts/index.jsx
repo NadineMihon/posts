@@ -10,9 +10,13 @@ export const PostsPage = () => {
 
     const dispatch = useDispatch();
 
+
+
     useEffect(() => {
-        dispatch(getPosts())
-    }, []);
+        if (!posts) {
+            dispatch(getPosts()); 
+        } 
+    }, [posts, dispatch]);
 
     if (loading) {
         return <>Loading...</>

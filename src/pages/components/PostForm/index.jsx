@@ -7,13 +7,10 @@ import { useNavigate } from "react-router-dom";
 
 import * as SC from "./styles";
 
-const DEFAULT_VALUES = {title: '', body: ''};
+const DEFAULT_VALUES = { title: '', body: '' };
 
-export const PostForm = () => {
-    const dispatch = useDispatch();
-    const navigate = useNavigate(); 
-
-    const [formValues, setFormValues] = useState(DEFAULT_VALUES);
+export const PostForm = ({ title, onSubmitForm, defaultValues }) => {
+    const [formValues, setFormValues] = useState(defaultValues || DEFAULT_VALUES);
 
     const onChange = (name, value) => {
         setFormValues({...formValues, [name]: value});
@@ -21,16 +18,15 @@ export const PostForm = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        dispatch(addPost(formValues));
+        onSubmitForm(formValues);
         setFormValues(DEFAULT_VALUES);
-        // navigate('/posts');
     };
 
     const disabled = !formValues.title || !formValues.body;
 
     return (
         <Container>
-            <Typo>Создать новый пост</Typo>
+            <Typo>{title}</Typo>
             <SC.Form onSubmit={onSubmit}>
                 <SC.Field>
                     <SC.Input

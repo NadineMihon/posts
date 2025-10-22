@@ -1,7 +1,7 @@
 export const postsAPI = {
     fetchPosts () {
         try {
-            return fetch(`https://jsonplaceholder.typicode.com/posts?_sort=id&_order=desc`)
+            return fetch(`https://jsonplaceholder.typicode.com/posts?_sort=id&_order=desc&_limit=4`)
                 .then((response) => response.json())
                 .then((posts) => posts);
         } catch (ex) {

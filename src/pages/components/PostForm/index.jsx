@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { Container } from "../../../components/Container";
 import { Typo } from "../../../components/Typo";
-import { useDispatch } from "react-redux";
-import { addPost } from "../../../redux/slice/postsSlice";
-import { useNavigate } from "react-router-dom";
+import { Button } from "../../../components/Button";
 
 import * as SC from "./styles";
 
@@ -48,7 +46,7 @@ export const PostForm = ({ title, onSubmitForm, defaultValues }) => {
                     >
                     </SC.TextAria>    
                 </SC.Field>
-                <SC.Button type="submit" disabled={disabled}>Сохранить</SC.Button >
+                <Button type="submit" disabled={disabled}>Сохранить</Button >
             </SC.Form> 
         </Container>
     )

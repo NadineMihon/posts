@@ -10,8 +10,6 @@ export const PostsPage = () => {
 
     const dispatch = useDispatch();
 
-
-
     useEffect(() => {
         if (!posts) {
             dispatch(getPosts()); 

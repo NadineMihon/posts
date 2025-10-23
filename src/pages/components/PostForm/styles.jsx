@@ -34,28 +34,3 @@ export const TextAria = styled.textarea `
     border: 1px solid #00000078;
     padding: 4px 8px;
 `
-export const Button = styled.button `
-    ${CommonStyles};
-    max-width: 150px;
-    width: 100%;
-    font-weight: 500;
-    border-radius: 8px;
-    border: none;
-    padding: 7px 14px;
-    color: white;
-    background-color:#000000ca;
-    cursor: pointer;
-
-    &:hover {
-        background-color:#000000;
-    }
-
-    &:disabled {
-        opacity: 0.5;
-        cursor: default;
-
-        &:hover {
-           background-color:#000000ca; 
-        }
-    }
-`

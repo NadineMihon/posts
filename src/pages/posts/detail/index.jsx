@@ -1,30 +1,41 @@
-import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Typo } from "../../../components/Typo";
 import { Container } from "../../../components/Container";
 import { Link } from "../../../components/Link";
 import { useDispatch, useSelector } from "react-redux";
-import { getPostById, showPost } from "../../../redux/slice/postsSlice";
+import { deletePost, getPostById, showPost } from "../../../redux/slice/postsSlice";
 
 import * as SC from "./styles";
+import { Button } from "../../../components/Button";
+import { Modal } from "../../../components/Modal";
 
 export const DetailPostPage = () => {
     const { postId } = useParams();
+    const id = Number(postId);
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const { post, loading } = useSelector((state) => state.posts.postForView);
     const { posts } = useSelector((state) => state.posts.list);
     
-    const dispatch = useDispatch();
+    const [postForDelete, setPostForDelete] = useState(null);
 
-    useEffect(() => {
-        const id = Number(postId);
+    const onDeletePost = () => {
+        dispatch(deletePost(postForDelete.id));
+        setPostForDelete(null);
+        navigate('/posts');
+    };
+
+    useEffect(() => {  
         const foundPost = posts ? posts.find((item) => item.id === id) : undefined;
         if (foundPost) {
             dispatch(showPost(foundPost));
         } else {
            dispatch(getPostById(id)); 
         }
-    }, [postId, posts, dispatch]);
+    }, [id, posts, dispatch]);
 
     if (loading) {
         return <>Loading...</>
@@ -38,6 +49,18 @@ export const DetailPostPage = () => {
 
     return (
         <Container>
+            {
+                postForDelete && 
+                    <Modal>
+                        <SC.ModalWrapper>
+                            <p>Вы уверены, что хотите удалить публикацию с ID - {postForDelete.id}?</p>
+                            <SC.ButtonWrapper>
+                                <Button bgColor="red" onClick={() => onDeletePost()}>Да</Button>
+                                <Button onClick={() => setPostForDelete(null)}>Нет</Button>                         
+                            </SC.ButtonWrapper>
+                        </SC.ModalWrapper>
+                    </Modal>
+            }
             <SC.Post>
                 <Typo>{post.title}</Typo>
                 <SC.Image src={image} alt={post.title} />
@@ -45,7 +68,12 @@ export const DetailPostPage = () => {
             </SC.Post>
             <SC.LinkWrapper>
                 <Link to={'/posts'}>Обратно к публикациям</Link>
-                <Link to={`/posts/${postId}/edit`}>Редактировать пост</Link>                
+                {
+                    posts && <Link to={`/posts/${id}/edit`}>Редактировать пост</Link>                    
+                }
+                {
+                    posts && <Button bgColor="red" onClick={() => setPostForDelete(post)}>Удалить</Button>  
+                }               
             </SC.LinkWrapper>
         </Container>
     )

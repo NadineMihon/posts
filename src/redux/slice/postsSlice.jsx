@@ -110,6 +110,6 @@ export const postsSlice = createSlice({
   }
 });
 
-export const { editPost, addPost, showPost, deletePost, resetDeleteFlag } = postsSlice.actions;
+export const { editPost, addPost, showPost, deletePost } = postsSlice.actions;
 
 export default postsSlice.reducer;

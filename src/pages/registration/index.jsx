@@ -7,11 +7,8 @@ import { Input } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 
-const DEFAULT_VALUES = { name: '', surname: '', email: '', password: '' };
-;
-
 export const RegistrationPage = () => {
-    const [formValues, setFormValues] = useState(DEFAULT_VALUES);
+    const [formValues, setFormValues] = useState({ name: '', surname: '', email: '', password: '' });
     const userId = Date.now();
     const newUser = { id: userId, ...formValues };
 
@@ -47,7 +44,7 @@ export const RegistrationPage = () => {
     };
 
     const onChange = (name, value) => {
-        setFormValues({...formValues, [name]: value});
+        setFormValues({ ...formValues, [name]: value });
     };
 
     const disabled = !formValues.email || !formValues.password;

@@ -1,6 +1,6 @@
 import React from "react";
 import { Post } from "./components/Post";
-import { Container } from "../Container";
+import { Container } from "../ui/Container";
 
 import * as SC from "./styles";
 

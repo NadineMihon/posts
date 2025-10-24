@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Container } from "../../../components/Container";
-import { Typo } from "../../../components/Typo";
-import { Button } from "../../../components/Button";
-
-import * as SC from "./styles";
+import { Container } from "../../../components/ui/Container";
+import { Typo } from "../../../components/ui/Typo";
+import { Button } from "../../../components/ui/Button";
+import { Form } from "../../../components/ui/Form";
+import { Field } from "../../../components/ui/Field";
+import { Input } from "../../../components/ui/Input";
+import { TextAria } from "../../../components/ui/TextAria";
 
 const DEFAULT_VALUES = { title: '', body: '' };
 
@@ -25,29 +27,28 @@ export const PostForm = ({ title, onSubmitForm, defaultValues }) => {
     return (
         <Container>
             <Typo>{title}</Typo>
-            <SC.Form onSubmit={onSubmit}>
-                <SC.Field>
-                    <SC.Input
+            <Form onSubmit={onSubmit}>
+                <Field>
+                    <Input
                         value={formValues.title} 
                         type="text" 
                         name="title" 
                         placeholder="Заголовок поста"
                         onChange={(e) => onChange(e.target.name, e.target.value)}
                     />    
-                </SC.Field>
-                <SC.Field>
-                    <SC.TextAria 
+                </Field>
+                <Field>
+                    <TextAria 
                         value={formValues.body}
                         name="body" 
                         placeholder="Текст поста" 
                         rows={10} 
                         cols={30}
                         onChange={(e) => onChange(e.target.name, e.target.value)}
-                    >
-                    </SC.TextAria>    
-                </SC.Field>
+                    />    
+                </Field>
                 <Button type="submit" disabled={disabled}>Сохранить</Button >
-            </SC.Form> 
+            </Form> 
         </Container>
     )
 };

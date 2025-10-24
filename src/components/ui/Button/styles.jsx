@@ -23,7 +23,8 @@ export const Button = styled.button `
         cursor: default;
 
         &:hover {
-           background-color:#000000ca; 
+           background-color:#000000ca;
+           font-weight: 500; 
         }
     }
 `

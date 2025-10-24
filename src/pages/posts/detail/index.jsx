@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Typo } from "../../../components/Typo";
-import { Container } from "../../../components/Container";
-import { Link } from "../../../components/Link";
+import { Typo } from "../../../components/ui/Typo";
+import { Container } from "../../../components/ui/Container";
+import { Link } from "../../../components/ui/Link";
+import { Button } from "../../../components/ui/Button";
+import { Modal } from "../../../components/ui/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, getPostById, showPost } from "../../../redux/slice/postsSlice";
 
 import * as SC from "./styles";
-import { Button } from "../../../components/Button";
-import { Modal } from "../../../components/Modal";
 
 export const DetailPostPage = () => {
     const { postId } = useParams();
@@ -28,12 +28,20 @@ export const DetailPostPage = () => {
         navigate('/posts');
     };
 
-    useEffect(() => {  
+    useEffect(() => {
+        const postExists = posts?.some((post) => post.id === id);
+
+        if (!postExists) {
+            dispatch(showPost(null));
+            return;
+        }
+
         const foundPost = posts ? posts.find((item) => item.id === id) : undefined;
+        
         if (foundPost) {
             dispatch(showPost(foundPost));
         } else {
-           dispatch(getPostById(id)); 
+            dispatch(getPostById(id)); 
         }
     }, [id, posts, dispatch]);
 

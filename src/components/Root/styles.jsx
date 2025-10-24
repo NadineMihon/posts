@@ -9,8 +9,7 @@ export const Wrapper = styled.div `
     font-family: Raleway;
     font-size: 16px;
 `
-
-export const Menu = styled.div `
+export const MenuWrapper = styled.div `
     margin: 25px auto;
     padding: 12px 20px;
     max-width: 700px;
@@ -18,12 +17,18 @@ export const Menu = styled.div `
     display: flex;
     gap: 20px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     flex-wrap: wrap;
     border: 1px solid #00000057;
     border-radius: 40px;
 `
-
+export const Menu = styled.div `
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+`
 export const MenuItem = styled(NavLink) `
     font-family: Raleway;
     font-weight: 500;

@@ -1,11 +1,15 @@
-import React, { useId, useState } from "react";
+import React, { useState } from "react";
 import { Container } from "../../components/ui/Container";
 import { Typo } from "../../components/ui/Typo";
 import { Form } from "../../components/ui/Form";
 import { Field } from "../../components/ui/Field";
 import { Input } from "../../components/ui/Input";
 import { Button } from "../../components/ui/Button";
+import { Modal } from "../../components/ui/Modal";
 import { useNavigate } from "react-router-dom";
+
+const SUCCESS_MESSAGE = 'Вы успешно зарегистрировались!';
+const FAILURE_MESSAGE = 'Пользователь с таким email уже существует';
 
 export const RegistrationPage = () => {
     const [formValues, setFormValues] = useState({ name: '', surname: '', email: '', password: '' });
@@ -14,6 +18,22 @@ export const RegistrationPage = () => {
 
     const navigate = useNavigate();
 
+    const [openModal, setOpenModal] = useState(false);
+    const [modalMessage, setModalMessage] = useState('');
+    
+    const showModal = (message) => {
+        setModalMessage(message);
+        setOpenModal(true);
+    };
+    
+    const closeModal = () => {
+        setOpenModal(false);
+    
+        if (modalMessage === SUCCESS_MESSAGE) {
+            navigate('/auth');  
+        }
+    };
+
     const onSubmit = (e) => {
         e.preventDefault();
         try {
@@ -21,22 +41,20 @@ export const RegistrationPage = () => {
             
             if (!users) {
                 localStorage.setItem('users', JSON.stringify([newUser]));
-                alert('Вы успешно зарегистрировались');
+                showModal(SUCCESS_MESSAGE);
                 navigate('/auth');
                 return;
             } 
 
             if (users.find((user) => user.email === formValues.email)) {
-                alert('Пользователь с таким email уже существует');
+                showModal(FAILURE_MESSAGE);
                 return;
             } 
 
             users.push(newUser);
             localStorage.setItem('users', JSON.stringify(users));
 
-            alert('Вы успешно зарегистрировались');
-
-            navigate('/auth');
+            showModal(SUCCESS_MESSAGE);
 
         } catch (e) {
             console.log(e);
@@ -52,6 +70,15 @@ export const RegistrationPage = () => {
     return (
         <Container>
             <Typo>Страница регистрации</Typo>
+            {
+                openModal && 
+                    <Modal>
+                        <p>{modalMessage}</p>
+                        <Field>
+                            <Button onClick={() => closeModal()}>Ок</Button>
+                        </Field>
+                    </Modal>
+            }
             <Form onSubmit={onSubmit} autoComplete="off">
                 <Field>
                     <Input

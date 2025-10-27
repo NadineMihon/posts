@@ -4,7 +4,7 @@ import { Link } from "../../../ui/Link";
 import * as SC from "./styles";
 
 export const Post = ({ post }) => {
-    const image = post.image || 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png';
+    const image = post.image || 'https://journals.researchparks.org/public/journals/3/article_4808_cover_en_US.png';
     
     return (
         <SC.Post>

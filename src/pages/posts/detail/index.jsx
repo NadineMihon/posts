@@ -7,6 +7,7 @@ import { Button } from "../../../components/ui/Button";
 import { Modal } from "../../../components/ui/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, getPostById, showPost } from "../../../redux/slice/postsSlice";
+import { Field } from "../../../components/ui/Field/styles";
 
 import * as SC from "./styles";
 
@@ -56,20 +57,18 @@ export const DetailPostPage = () => {
         return <>Пост не найден</>
     }
     
-    const image = post.image || 'https://cdn4.iconfinder.com/data/icons/audio-video-gaming-controls/512/Audio_video_game_controls_Information-1024.png';
+    const image = post.image || 'https://journals.researchparks.org/public/journals/3/article_4808_cover_en_US.png';
 
     return (
         <Container>
             {
                 postForDelete && 
                     <Modal>
-                        <SC.ModalWrapper>
-                            <p>Вы уверены, что хотите удалить публикацию с ID - {postForDelete.id}?</p>
-                            <SC.ButtonWrapper>
-                                <Button bgColor="red" onClick={() => onDeletePost()}>Да</Button>
-                                <Button onClick={() => setPostForDelete(null)}>Нет</Button>                         
-                            </SC.ButtonWrapper>
-                        </SC.ModalWrapper>
+                        <p>Вы уверены, что хотите удалить публикацию с ID - {postForDelete.id}?</p>
+                        <Field>
+                            <Button bgColor="red" onClick={() => onDeletePost()}>Да</Button>
+                            <Button onClick={() => setPostForDelete(null)}>Нет</Button>                         
+                        </Field>
                     </Modal>
             }
             <SC.Post>

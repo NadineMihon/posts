@@ -3,7 +3,8 @@ import { postsAPI } from '../../api/postsAPI';
 
 const initialState = {
   list: {
-    posts: null,
+    posts: //[{id: 1, title: "test 1", body: "test 1"}],
+    null,
     loading: false
   },
   postForView: {
@@ -25,8 +26,21 @@ export const getPosts = createAsyncThunk(
 
 export const getFreshPosts = createAsyncThunk(
   'posts/fetchFreshPosts',
-  async(limit) => {
-    return await postsAPI.fetchFreshPosts(limit);
+  async(limit = 3, { getState }) => {
+    const state = getState();
+    const existingPosts = state.posts.list.posts;
+
+    if (!existingPosts) {
+      return await postsAPI.fetchFreshPosts(limit);
+    }
+
+    if (existingPosts.length <= limit) {
+      return existingPosts;
+    }
+      
+    if (existingPosts.length > limit) {
+      return existingPosts.slice(0, limit);
+    }
   }
 );
 
@@ -84,10 +98,7 @@ export const postsSlice = createSlice({
         };
       })
       .addCase(getFreshPosts.pending, (state) => {
-        state.freshPosts = {
-          posts: null,
-          loading: true
-        }
+        state.freshPosts.loading = true;
       })
       .addCase(getFreshPosts.fulfilled, (state, action) => {
         state.freshPosts = {
@@ -107,7 +118,7 @@ export const postsSlice = createSlice({
           loading: false
         };
       })
-  }
+    }
 });
 
 export const { editPost, addPost, showPost, deletePost } = postsSlice.actions;

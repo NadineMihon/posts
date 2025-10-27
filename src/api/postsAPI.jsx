@@ -8,7 +8,7 @@ export const postsAPI = {
             console.log(ex)
         }
     },
-    fetchFreshPosts (limit = 3) {
+    fetchFreshPosts (limit) {
         try {
             if (!limit) {
                 throw new Error(`Limit is broken`);

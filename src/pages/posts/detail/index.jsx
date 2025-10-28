@@ -8,6 +8,7 @@ import { Modal } from "../../../components/ui/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, getPostById, showPost } from "../../../redux/slice/postsSlice";
 import { Field } from "../../../components/ui/Field/styles";
+import { Loader } from "../../../components/ui/Loader";
 
 import * as SC from "./styles";
 
@@ -50,11 +51,11 @@ export const DetailPostPage = () => {
     }, [id, posts, dispatch]);
 
     if (loading) {
-        return <>Loading...</>
+        return <Loader/>
     }
 
     if (!post || !post.hasOwnProperty('id')) {
-        return <>Пост не найден</>
+        return <Typo>Пост не найден</Typo>
     }
     
     const image = post.image || 'https://journals.researchparks.org/public/journals/3/article_4808_cover_en_US.png';

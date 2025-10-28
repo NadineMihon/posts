@@ -15,6 +15,8 @@ const initialState = {
     posts: null,
     loading: false
   },
+  searchQuery: '',
+  sortBy: '',
 };
 
 export const getPosts = createAsyncThunk(
@@ -82,6 +84,9 @@ export const postsSlice = createSlice({
           loading: false
       };
     },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -121,6 +126,6 @@ export const postsSlice = createSlice({
     }
 });
 
-export const { editPost, addPost, showPost, deletePost } = postsSlice.actions;
+export const { editPost, addPost, showPost, deletePost, setSearchQuery } = postsSlice.actions;
 
 export default postsSlice.reducer;

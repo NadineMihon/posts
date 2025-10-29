@@ -87,6 +87,9 @@ export const postsSlice = createSlice({
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
+    setSortBy: (state, action) => {
+      state.sortBy = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -126,6 +129,6 @@ export const postsSlice = createSlice({
     }
 });
 
-export const { editPost, addPost, showPost, deletePost, setSearchQuery } = postsSlice.actions;
+export const { editPost, addPost, showPost, deletePost, setSearchQuery, setSortBy } = postsSlice.actions;
 
 export default postsSlice.reducer;

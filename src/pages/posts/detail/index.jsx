@@ -21,6 +21,7 @@ export const DetailPostPage = () => {
 
     const { post, loading } = useSelector((state) => state.posts.postForView);
     const { posts } = useSelector((state) => state.posts.list);
+    const { freshPosts } = useSelector((state) => state.posts);
     const { user } = useSelector((state) => state.auth);
     
     const [postForDelete, setPostForDelete] = useState(null);
@@ -33,22 +34,24 @@ export const DetailPostPage = () => {
         navigate('/posts');
     };
 
+    const sourcePosts = posts ? posts : freshPosts.posts; 
+
     useEffect(() => {
-        const postExists = posts?.some((post) => post.id === id);
+        const postExists = sourcePosts?.some((post) => post.id === id);
 
         if (!postExists) {
             dispatch(showPost(null));
             return;
         }
 
-        const foundPost = posts ? posts.find((item) => item.id === id) : undefined;
+        const foundPost = sourcePosts ? sourcePosts.find((post) => post.id === id) : undefined;
         
         if (foundPost) {
             dispatch(showPost(foundPost));
         } else {
             dispatch(getPostById(id)); 
         }
-    }, [id, posts, dispatch]);
+    }, [id, sourcePosts, dispatch]);
 
     if (loading) {
         return <Loader/>

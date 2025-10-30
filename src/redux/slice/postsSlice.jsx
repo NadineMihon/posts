@@ -1,10 +1,9 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, current } from '@reduxjs/toolkit';
 import { postsAPI } from '../../api/postsAPI';
 
 const initialState = {
   list: {
-    posts: //[{id: 1, title: "test 1", body: "test 1"}],
-    null,
+    posts: null,
     loading: false
   },
   postForView: {
@@ -17,6 +16,10 @@ const initialState = {
   },
   searchQuery: '',
   sortBy: '',
+  pagination: {
+    currentPage: 1,
+    postsPerPage: 12,
+  },
 };
 
 export const getPosts = createAsyncThunk(
@@ -85,10 +88,21 @@ export const postsSlice = createSlice({
       };
     },
     setSearchQuery: (state, action) => {
+      if (state.searchQuery !== action.payload) {
+        state.pagination.currentPage = 1;  
+      }
+      
       state.searchQuery = action.payload;
     },
     setSortBy: (state, action) => {
+      if (state.sortBy !== action.payload) {
+        state.pagination.currentPage = 1;  
+      }
+      
       state.sortBy = action.payload;
+    },
+    goToPage: (state, action) => {
+      state.pagination.currentPage = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -129,6 +143,6 @@ export const postsSlice = createSlice({
     }
 });
 
-export const { editPost, addPost, showPost, deletePost, setSearchQuery, setSortBy } = postsSlice.actions;
+export const { editPost, addPost, showPost, deletePost, setSearchQuery, setSortBy, goToPage } = postsSlice.actions;
 
 export default postsSlice.reducer;

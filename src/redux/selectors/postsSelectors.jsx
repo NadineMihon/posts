@@ -1,7 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 export const SelectFilteredPosts = createSelector(
-    [state => state.posts.list.posts, state => state.posts.searchQuery, state => state.posts.sortBy],
+    [
+        state => state.posts.list.posts, 
+        state => state.posts.searchQuery, 
+        state => state.posts.sortBy
+    ],
 
     (posts, searchQuery, sortBy) => {
         let result = posts;
@@ -21,5 +25,34 @@ export const SelectFilteredPosts = createSelector(
         }
 
         return result;
+    }
+);
+
+export const SelectPaginatedPosts = createSelector(
+    [
+        SelectFilteredPosts, 
+        state => state.posts.pagination.currentPage, 
+        state => state.posts.pagination.postsPerPage
+    ],
+
+    (filteredPosts, currentPage, postsPerPage) => {
+
+        if (!filteredPosts || filteredPosts.length === 0) {
+            return {
+                paginatedPosts: [],
+                pageCount: 0,  
+            } 
+        }
+
+        const pageCount = Math.ceil(filteredPosts.length / postsPerPage);
+        const paginatedPosts = filteredPosts.slice(
+            (currentPage - 1) * postsPerPage,
+            currentPage * postsPerPage
+        );
+
+        return {
+            paginatedPosts,
+            pageCount,
+        }
     }
 );

@@ -5,16 +5,19 @@ import { Typo } from "../../components/ui/Typo";
 import { Field } from "../../components/ui/Field";
 import { Input } from "../../components/ui/Input";
 import { useDispatch, useSelector } from "react-redux";
-import { getPosts, setSearchQuery, setSortBy } from "../../redux/slice/postsSlice";
+import { getPosts, goToPage, setSearchQuery, setSortBy } from "../../redux/slice/postsSlice";
 import { Loader } from "../../components/ui/Loader";
-import { SelectFilteredPosts } from "../../redux/selectors/postsSelectors";
+import { SelectPaginatedPosts } from "../../redux/selectors/postsSelectors";
 import { Select } from "../../components/ui/Select";
 
+import * as SC from "./styles";
+
 export const PostsPage = () => {
-    const { loading } = useSelector((state) => state.posts.list);
-    const { searchQuery } = useSelector(state => state.posts);
+    const { posts, loading } = useSelector((state) => state.posts.list);
+    const { searchQuery } = useSelector((state) => state.posts);
     const { sortBy } = useSelector((state) => state.posts);
-    const filteredPosts = useSelector(SelectFilteredPosts);
+    const { currentPage } = useSelector((state) => state.posts.pagination);
+    const { paginatedPosts, pageCount } = useSelector(SelectPaginatedPosts);
 
     const dispatch = useDispatch();
     
@@ -29,16 +32,16 @@ export const PostsPage = () => {
     }, [searchValue, dispatch]);
 
     useEffect(() => {
-        if (!filteredPosts) {
+        if (!posts) {
             dispatch(getPosts()); 
         } 
-    }, [filteredPosts, dispatch]);
+    }, [posts, dispatch]);
 
     if (loading) {
         return <Loader />
     }
 
-    if (!filteredPosts) {
+    if (!paginatedPosts) {
         return <Typo>Посты не найдены</Typo>
     }
 
@@ -66,7 +69,18 @@ export const PostsPage = () => {
                     </Select>  
                 </Field>
             </Field>
-            <Posts posts={filteredPosts} />
+            <Posts posts={paginatedPosts} />
+            <SC.Pages>
+                {Array.from({ length: pageCount }, (_,i) => (
+                    <SC.Page
+                        key={i + 1}
+                        className={currentPage === i + 1 ? 'active' : ''}
+                        onClick={() => dispatch(goToPage(i + 1))}
+                    >
+                        {i + 1}
+                    </SC.Page>
+                ))}
+            </SC.Pages>
         </Container>
     )
 };
